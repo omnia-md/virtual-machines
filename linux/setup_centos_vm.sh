@@ -50,14 +50,3 @@ sudo ln -s  ~/miniconda/ /opt/anaconda1anaconda2anaconda3
 export PATH=$HOME/miniconda/bin:$PATH
 conda config --add channels http://conda.binstar.org/omnia
 conda install --yes fftw3f jinja2 swig sphinx conda-build cmake binstar
-
-
-# Download AMD APP SDK from here, requires click agreement: http://developer.amd.com/amd-license-agreement-appsdk/
-# Ideally we could cache this on AWS or something...
-mkdir ~/Software/AMD
-cd ~/Software/AMD
-# Copy the tarball to the directory containing VagrantFile, which will be shared on the guest as /vagrant/
-cp /vagrant/AMD-APP-SDK-v2.9-lnx64.tgz  ./
-tar -zxvf  /vagrant/AMD-APP-SDK-v2.9-lnx64.tgz
-sudo ./Install-AMD-APP.sh
-
