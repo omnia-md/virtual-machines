@@ -25,6 +25,7 @@ sudo rpm -i ~/rpmbuild/RPMS/x86_64/doxygen-1.8.7-1.x86_64.rpm
 rm ~/rpmbuild -r
 
 
+sudo yum install gcc-gfortran  # Used for ambermini
 sudo yum clean headers
 sudo yum clean packages
 
