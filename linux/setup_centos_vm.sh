@@ -18,11 +18,15 @@ sudo yum update -y
 sudo yum install clang cmake28 graphviz perl flex bison rpm-build texlive texlive-latex ghostscript gcc gcc-c++ git vim -y
 # Note: changed from clang-3.4 to clang because the package has apparently been renamed.  KAB Oct 2 2014.  
 
+
 # Probably can't use RHEL6 version of doxygen because it's very old.
-wget http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.7.src.tar.gz
-rpmbuild -ta doxygen-1.8.7.src.tar.gz
-sudo rpm -i ~/rpmbuild/RPMS/x86_64/doxygen-1.8.7-1.x86_64.rpm
+wget http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.8.src.tar.gz
+sudo yum remove doxygen  # Remove yum version!  Necessary as otherwise might not overwrite.
+rpmbuild -ta doxygen-1.8.8.src.tar.gz
+sudo yum install -y ~/rpmbuild/RPMS/x86_64/doxygen-1.8.8-1.x86_64.rpm
+echo "exclude=doxygen" | sudo tee --append /etc/yum.conf  # The hand-built RPM package has the wrong versioning scheme and by default will be overwritten by a yum update.  This prevents overwriting.
 rm ~/rpmbuild -r
+doxygen --version  # Should be 1.8.8
 
 
 sudo yum install gcc-gfortran  # Used for ambermini
