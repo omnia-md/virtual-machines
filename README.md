@@ -1,3 +1,5 @@
+[![Build Status](https://jenkins.choderalab.org/buildStatus/icon?job=test-omnia-virtual-machines)](https://jenkins.choderalab.org/job/test-omnia-virtual-machines/)
+
 virtual-machines
 ================
 
