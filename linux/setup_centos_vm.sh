@@ -13,8 +13,11 @@ sudo rpm -i epel-release-6-8.noarch.rpm
 
 sudo yum update -y
 
+# Install things needed for virtualbox guest additions.
+sudo yum install kernel-devel dkms
+
 # Several of these come from the EPEL repo
-sudo yum install clang cmak graphviz perl flex bison rpm-build texlive texlive-latex ghostscript gcc gcc-c++ git vim -y
+sudo yum install clang cmake graphviz perl flex bison rpm-build texlive texlive-latex ghostscript gcc gcc-c++ git vim -y
 # Note: changed from clang-3.4 to clang because the package has apparently been renamed.  KAB Oct 2 2014.
 
 
