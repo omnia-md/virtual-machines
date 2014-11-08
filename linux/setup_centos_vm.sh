@@ -4,6 +4,8 @@
 #vagrant up
 #vagrant ssh
 
+# Set up /vagrant mounting.
+sudo ln -s /opt/VBoxGuestAdditions-4.3.10/lib/VBoxGuestAdditions /usr/lib/VBoxGuestAdditions
 
 # Download and enable the EPEL RedHat EL extras repository
 mkdir ~/Software
@@ -55,3 +57,4 @@ sudo ln -s  ~/miniconda/ /opt/anaconda1anaconda2anaconda3
 export PATH=$HOME/miniconda/bin:$PATH
 conda config --add channels http://conda.binstar.org/omnia
 conda install --yes fftw3f jinja2 swig sphinx conda-build cmake binstar
+
