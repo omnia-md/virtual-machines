@@ -14,8 +14,8 @@ sudo rpm -i epel-release-6-8.noarch.rpm
 sudo yum update -y
 
 # Several of these come from the EPEL repo
-sudo yum install clang cmake28 graphviz perl flex bison rpm-build texlive texlive-latex ghostscript gcc gcc-c++ git vim -y
-# Note: changed from clang-3.4 to clang because the package has apparently been renamed.  KAB Oct 2 2014.  
+sudo yum install clang cmak graphviz perl flex bison rpm-build texlive texlive-latex ghostscript gcc gcc-c++ git vim -y
+# Note: changed from clang-3.4 to clang because the package has apparently been renamed.  KAB Oct 2 2014.
 
 
 # Probably can't use RHEL6 version of doxygen because it's very old.
