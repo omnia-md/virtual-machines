@@ -4,9 +4,6 @@
 #vagrant up
 #vagrant ssh
 
-# Set up /vagrant mounting.
-sudo ln -s /opt/VBoxGuestAdditions-4.3.10/lib/VBoxGuestAdditions /usr/lib/VBoxGuestAdditions
-
 # Download and enable the EPEL RedHat EL extras repository
 mkdir ~/Software
 cd Software
