@@ -14,6 +14,7 @@ sudo rpm -i epel-release-6-8.noarch.rpm
 sudo yum update -y
 
 # Install things needed for virtualbox guest additions.
+sudo yum remove kernel-2.6.32-431.el6.x86_64 # remove old kernel
 sudo yum install kernel-devel dkms
 
 # Several of these come from the EPEL repo
@@ -58,3 +59,5 @@ export PATH=$HOME/miniconda/bin:$PATH
 conda config --add channels http://conda.binstar.org/omnia
 conda install --yes fftw3f jinja2 swig sphinx conda-build cmake binstar
 
+# Add conda to the path.
+echo "export PATH=$HOME/miniconda/bin:$PATH" >> .bashrc
