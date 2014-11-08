@@ -17,7 +17,7 @@ sudo yum update -y
 sudo yum install kernel-devel dkms
 
 # Several of these come from the EPEL repo
-sudo yum install clang cmake graphviz perl flex bison rpm-build texlive texlive-latex ghostscript gcc gcc-c++ git vim emacs swig -y
+sudo yum install clang cmake graphviz perl flex bison rpm-build texlive texlive-latex ghostscript gcc gcc-c++ git vim emacs swig zip -y
 # Note: changed from clang-3.4 to clang because the package has apparently been renamed.  KAB Oct 2 2014.
 
 
