@@ -66,3 +66,6 @@ conda install --yes fftw3f jinja2 swig sphinx conda-build cmake binstar
 # Add conda to the path.
 echo "export PATH=$HOME/miniconda/bin:/usr/local/texlive/2014/bin/x86_64-linux:$PATH" >> .bashrc
 
+# Install additional packages via pip.
+sudo pip install sphinxcontrib-bibtex
+
