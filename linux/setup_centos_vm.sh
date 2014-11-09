@@ -61,7 +61,7 @@ sudo ln -s  ~/miniconda/ /opt/anaconda1anaconda2anaconda3
 
 export PATH=$HOME/miniconda/bin:$PATH
 conda config --add channels http://conda.binstar.org/omnia
-conda install --yes fftw3f jinja2 swig sphinx conda-build cmake binstar
+conda install --yes fftw3f jinja2 swig sphinx conda-build cmake binstar pip
 
 # Add conda to the path.
 echo "export PATH=$HOME/miniconda/bin:/usr/local/texlive/2014/bin/x86_64-linux:$PATH" >> .bashrc
