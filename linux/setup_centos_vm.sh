@@ -18,9 +18,13 @@ sudo yum remove kernel-2.6.32-431.el6.x86_64 # remove old kernel
 sudo yum install kernel-devel dkms
 
 # Several of these come from the EPEL repo
-sudo yum install clang cmake graphviz perl flex bison rpm-build texlive texlive-latex ghostscript gcc gcc-c++ git vim emacs swig zip sphinx python-sphinx -y
+sudo yum install clang cmake graphviz perl flex bison rpm-build gcc gcc-c++ git vim emacs swig zip sphinx python-sphinx -y
 # Note: changed from clang-3.4 to clang because the package has apparently been renamed.  KAB Oct 2 2014.
 
+# We have to install a modern texlive 2014 distro, since the yum-installable version is missing vital components.
+wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
+cd install-tl-*
+sudo ./install-tl -profile /vagrant/texlive.profile
 
 # Probably can't use RHEL6 version of doxygen because it's very old.
 wget http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.8.src.tar.gz
@@ -60,4 +64,5 @@ conda config --add channels http://conda.binstar.org/omnia
 conda install --yes fftw3f jinja2 swig sphinx conda-build cmake binstar
 
 # Add conda to the path.
-echo "export PATH=$HOME/miniconda/bin:$PATH" >> .bashrc
+echo "export PATH=$HOME/miniconda/bin:/usr/local/texlive/2014/bin/x86_64-linux:$PATH" >> .bashrc
+
