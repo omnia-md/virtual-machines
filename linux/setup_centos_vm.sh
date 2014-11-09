@@ -32,9 +32,11 @@ wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
 tar zxf install-tl-unx.tar.gz
 cd install-tl-*
 sudo ./install-tl -profile /vagrant/texlive.profile
+cd ..
 
 # Probably can't use RHEL6 version of doxygen because it's very old.
 echo "********** Compiling recent doxygen..."
+cd ~/Software
 wget http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.8.src.tar.gz
 sudo yum remove doxygen  # Remove yum version!  Necessary as otherwise might not overwrite.
 rpmbuild -ta doxygen-1.8.8.src.tar.gz
@@ -78,7 +80,8 @@ conda config --add channels http://conda.binstar.org/omnia
 conda install --yes fftw3f jinja2 swig sphinx conda-build cmake binstar pip
 
 # Add conda to the path.
-echo "********** export PATH=$HOME/miniconda/bin:/usr/local/texlive/2014/bin/x86_64-linux:$PATH" >> .bashrc
+cd ~
+echo "********** export PATH=$HOME/miniconda/bin:/usr/local/texlive/2014/bin/x86_64-linux:$PATH" >> $HOME/.bashrc
 
 # Install additional packages via pip.
 echo "********** Installing packages via pip..."
