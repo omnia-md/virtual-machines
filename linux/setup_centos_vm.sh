@@ -18,7 +18,7 @@ sudo yum remove kernel-2.6.32-431.el6.x86_64 # remove old kernel
 sudo yum install kernel-devel dkms
 
 # Several of these come from the EPEL repo
-sudo yum install clang cmake graphviz perl flex bison rpm-build gcc gcc-c++ git vim emacs swig zip sphinx python-sphinx -y
+sudo yum install clang cmake graphviz perl flex bison rpm-build texlive texlive-latex ghostscript gcc gcc-c++ git vim emacs swig zip sphinx python-sphinx -y
 # Note: changed from clang-3.4 to clang because the package has apparently been renamed.  KAB Oct 2 2014.
 
 # We have to install a modern texlive 2014 distro, since the yum-installable version is missing vital components.
