@@ -80,8 +80,10 @@ conda config --add channels http://conda.binstar.org/omnia
 conda install --yes fftw3f jinja2 swig sphinx conda-build cmake binstar pip
 
 # Add conda to the path.
+echo "********** Adding paths"
 cd ~
-echo "********** export PATH=$HOME/miniconda/bin:/usr/local/texlive/2014/bin/x86_64-linux:$PATH" >> $HOME/.bashrc
+echo "export PATH=$HOME/miniconda/bin:/usr/local/texlive/2014/bin/x86_64-linux:$PATH" >> $HOME/.bashrc
+echo "" >> $HOME/.bashrc
 
 # Install additional packages via pip.
 echo "********** Installing packages via pip..."
