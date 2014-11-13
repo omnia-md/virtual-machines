@@ -16,7 +16,7 @@ sudo rpm -i epel-release-6-8.noarch.rpm
 echo "********** Removing old kernel package..."
 sudo yum remove kernel-2.6.32-431.el6.x86_64
 echo "********** Installing kernel headers and dkms for virtualbox guest additions..."
-sudo yum install kernel-devel dkms
+sudo yum install kernel-devel dkms -y
 
 echo "********** Updating yum..."
 sudo yum update -y
@@ -46,9 +46,11 @@ rm ~/rpmbuild -r
 doxygen --version  # Should be 1.8.8
 
 
+
 # Install fortran
 echo "********** Installing fortran..."
-sudo yum install gcc-gfortran  # Used for ambermini
+sudo yum install gcc-gfortran -y # Used for ambermini
+
 sudo yum clean headers
 sudo yum clean packages
 
