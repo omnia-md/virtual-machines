@@ -31,13 +31,12 @@ sudo yum install tar clang cmake graphviz perl flex bison rpm-build texlive texl
 echo "********** Compiling recent doxygen..."
 cd ~/Software
 wget http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.8.src.tar.gz
-sudo yum remove doxygen  # Remove yum version!  Necessary as otherwise might not overwrite.
+sudo yum remove doxygen -y # Remove yum version!  Necessary as otherwise might not overwrite.
 rpmbuild -ta doxygen-1.8.8.src.tar.gz --nodeps  # Use nodeps because we will eventually use a non-standard texlive installation with no RPM
 sudo yum install -y ~/rpmbuild/RPMS/x86_64/doxygen-1.8.8-1.x86_64.rpm
 echo "********** exclude=doxygen" | sudo tee --append /etc/yum.conf  # The hand-built RPM package has the wrong versioning scheme and by default will be overwritten by a yum update.  This prevents overwriting.
-rm ~/rpmbuild -r
 doxygen --version  # Should be 1.8.8
-# So we need to have the system texlive installed to build the rpm, but we can delete it afterwards.
+# Although we needed to have the redhat texlive installed to build the rpm, but we can delete the redhat texlive now.
 sudo yum remove texlive texlive-latex -y  # Get rid of the system texlive in preparation for latest version.
 
 
