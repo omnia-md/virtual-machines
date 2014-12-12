@@ -46,7 +46,8 @@ wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
 tar zxf install-tl-unx.tar.gz
 cd install-tl-*
 sudo ./install-tl -profile /vagrant/texlive.profile
-source ~/.bashrc  # texlive updates bashrc to put tex on the path, but we need to update the current shell session.
+export PATH=/usr/local/texlive/2014/bin/x86_64-linux:$PATH  # texlive updates bashrc to put tex on the path, but we need to update the current shell session.
+sleep 2
 
 # Make sure texlive install worked, as it often dies.  Only retry once, though.
 if which tex >/dev/null; then
