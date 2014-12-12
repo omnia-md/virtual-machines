@@ -23,8 +23,10 @@ sudo yum update -y
 
 # Several of these come from the EPEL repo
 echo "********** Installing lots of packages via yum..."
-sudo yum install tar clang cmake graphviz perl flex bison rpm-build texlive texlive-latex ghostscript gcc gcc-c++ git vim emacs swig zip sphinx python-sphinx -y
+sudo yum install tar clang cmake graphviz perl flex bison rpm-build ghostscript gcc gcc-c++ git vim emacs swig zip sphinx python-sphinx -y
 # Note: changed from clang-3.4 to clang because the package has apparently been renamed.  KAB Oct 2 2014.
+
+
 
 # We have to install a modern texlive 2014 distro, since the yum-installable version is missing vital components.
 echo "********** Installing texlive 2014..."
@@ -32,14 +34,25 @@ wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
 tar zxf install-tl-unx.tar.gz
 cd install-tl-*
 sudo ./install-tl -profile /vagrant/texlive.profile
+
+# Make sure texlive install worked, as it often dies.  Only retry once, though.
+if which tex >/dev/null; then
+    echo Found texlive
+else
+    echo No texlive, resuming installation
+    sudo ./install-tl -profile /vagrant/texlive.profile
+fi
+
 cd ..
+
+
 
 # Probably can't use RHEL6 version of doxygen because it's very old.
 echo "********** Compiling recent doxygen..."
 cd ~/Software
 wget http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.8.src.tar.gz
 sudo yum remove doxygen  # Remove yum version!  Necessary as otherwise might not overwrite.
-rpmbuild -ta doxygen-1.8.8.src.tar.gz
+rpmbuild -ta doxygen-1.8.8.src.tar.gz --nodeps  # Use nodeps because we have a non-standard texlive installation
 sudo yum install -y ~/rpmbuild/RPMS/x86_64/doxygen-1.8.8-1.x86_64.rpm
 echo "********** exclude=doxygen" | sudo tee --append /etc/yum.conf  # The hand-built RPM package has the wrong versioning scheme and by default will be overwritten by a yum update.  This prevents overwriting.
 rm ~/rpmbuild -r
