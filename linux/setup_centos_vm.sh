@@ -26,24 +26,39 @@ echo "********** Installing lots of packages via yum..."
 sudo yum install tar clang cmake graphviz perl flex bison rpm-build texlive texlive-latex ghostscript gcc gcc-c++ git vim emacs swig zip sphinx python-sphinx -y
 # Note: changed from clang-3.4 to clang because the package has apparently been renamed.  KAB Oct 2 2014.
 
+
+# Probably can't use RHEL6 version of doxygen because it's very old.
+echo "********** Compiling recent doxygen..."
+cd ~/Software
+wget http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.8.src.tar.gz
+sudo yum remove doxygen -y # Remove yum version!  Necessary as otherwise might not overwrite.
+rpmbuild -ta doxygen-1.8.8.src.tar.gz --nodeps  # Use nodeps because we will eventually use a non-standard texlive installation with no RPM
+sudo yum install -y ~/rpmbuild/RPMS/x86_64/doxygen-1.8.8-1.x86_64.rpm
+echo "exclude=doxygen" | sudo tee --append /etc/yum.conf  # The hand-built RPM package has the wrong versioning scheme and by default will be overwritten by a yum update.  This prevents overwriting.
+doxygen --version  # Should be 1.8.8
+# Although we needed to have the redhat texlive installed to build the rpm, but we can delete the redhat texlive now.
+sudo yum remove texlive texlive-latex -y  # Get rid of the system texlive in preparation for latest version.
+
+
 # We have to install a modern texlive 2014 distro, since the yum-installable version is missing vital components.
 echo "********** Installing texlive 2014..."
 wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
 tar zxf install-tl-unx.tar.gz
 cd install-tl-*
 sudo ./install-tl -profile /vagrant/texlive.profile
+export PATH=/usr/local/texlive/2014/bin/x86_64-linux:$PATH  # texlive updates bashrc to put tex on the path, but we need to update the current shell session.
+sleep 2
+
+# Make sure texlive install worked, as it often dies.  Only retry once, though.
+if which tex >/dev/null; then
+    echo Found texlive
+else
+    echo No texlive, resuming installation
+    sudo ./install-tl -profile /vagrant/texlive.profile
+fi
+
 cd ..
 
-# Probably can't use RHEL6 version of doxygen because it's very old.
-echo "********** Compiling recent doxygen..."
-cd ~/Software
-wget http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.8.src.tar.gz
-sudo yum remove doxygen  # Remove yum version!  Necessary as otherwise might not overwrite.
-rpmbuild -ta doxygen-1.8.8.src.tar.gz
-sudo yum install -y ~/rpmbuild/RPMS/x86_64/doxygen-1.8.8-1.x86_64.rpm
-echo "********** exclude=doxygen" | sudo tee --append /etc/yum.conf  # The hand-built RPM package has the wrong versioning scheme and by default will be overwritten by a yum update.  This prevents overwriting.
-rm ~/rpmbuild -r
-doxygen --version  # Should be 1.8.8
 
 
 
