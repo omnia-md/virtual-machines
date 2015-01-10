@@ -66,6 +66,8 @@ cd ..
 echo "********** Installing fortran..."
 sudo yum install gcc-gfortran -y # Used for ambermini
 
+sudo yum install -y lapack-devel  # Used for cvxopt.  This also grabs BLAS dependency.
+
 sudo yum clean headers
 sudo yum clean packages
 
