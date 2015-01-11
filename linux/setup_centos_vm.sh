@@ -25,7 +25,7 @@ sudo yum update -y
 echo "********** Installing lots of packages via yum..."
 sudo yum install tar clang cmake graphviz perl flex bison rpm-build texlive texlive-latex ghostscript gcc gcc-c++ git vim emacs swig zip sphinx python-sphinx -y
 # Note: changed from clang-3.4 to clang because the package has apparently been renamed.  KAB Oct 2 2014.
-
+sudo yum install -y screen
 
 # Probably can't use RHEL6 version of doxygen because it's very old.
 echo "********** Compiling recent doxygen..."
