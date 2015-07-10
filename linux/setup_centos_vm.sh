@@ -71,11 +71,14 @@ sudo yum install -y lapack-devel  # Used for cvxopt.  This also grabs BLAS depen
 sudo yum clean headers
 sudo yum clean packages
 
-# Install CUDA6.5 for RHEL6
-echo "********** Installing CUDA..."
+# Install CUDA7.0 for RHEL6
+echo "********** Installing CUDA 7.0 ..."
 cd ~/Software
-wget http://developer.download.nvidia.com/compute/cuda/repos/rhel6/x86_64/cuda-repo-rhel6-6.5-14.x86_64.rpm
-sudo rpm -i  cuda-repo-rhel6-6.5-14.x86_64.rpm
+#wget http://developer.download.nvidia.com/compute/cuda/repos/rhel6/x86_64/cuda-repo-rhel6-6.5-14.x86_64.rpm
+#sudo rpm -i  cuda-repo-rhel6-6.5-14.x86_64.rpm
+CUDA_RPM=cuda-7.0-28.x86_64.rpm
+wget http://developer.download.nvidia.com/compute/cuda/repos/rhel6/x86_64/$CUDA_RPM
+sudo rpm -i $CUDA_RPM
 sudo yum clean expire-cache
 sudo yum install cuda -y
 # NOTE: NVIDIA may push new MAJOR release versions of CUDA without warning.
@@ -103,6 +106,19 @@ echo "********** Installing conda/binstar channels and packages..."
 export PATH=$HOME/miniconda/bin:$PATH
 conda config --add channels http://conda.binstar.org/omnia
 conda install --yes fftw3f jinja2 swig sphinx conda-build cmake binstar pip
+
+# Install AMD APP SDK
+echo "********** Installing AMD APP SDK..."
+# Download AMD APP SDK from here, requires click agreement: http://developer.amd.com/amd-license-agreement-appsdk/
+# Ideally we could cache this on AWS or something...
+mkdir ~/Software/AMD
+cd ~/Software/AMD
+# Copy the tarball $APPSDKFILE to the directory containing VagrantFile, which will be shared on the guest as /vagrant/
+sudo yum install redhat-lsb -y
+APPSDKFILE="AMD-APP-SDK-linux-v2.9-1.599.381-GA-x64.tar.bz2"
+echo "This will fail if you do not have $APPSDKFILE already downloaded to the directory containing VagrantFile."
+tar -jxvf  /vagrant/$APPSDKFILE
+sudo ./AMD-APP-SDK-v2.9-1.599.381-GA-linux64.sh -- -s -a yes
 
 # Add conda to the path.
 echo "********** Adding paths"
