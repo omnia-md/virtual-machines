@@ -76,7 +76,7 @@ echo "********** Installing CUDA 7.0 ..."
 cd ~/Software
 #wget http://developer.download.nvidia.com/compute/cuda/repos/rhel6/x86_64/cuda-repo-rhel6-6.5-14.x86_64.rpm
 #sudo rpm -i  cuda-repo-rhel6-6.5-14.x86_64.rpm
-CUDA_RPM=cuda-7.0-28.x86_64.rpm
+CUDA_RPM=cuda-repo-rhel6-7.0-28.x86_64.rpm
 wget http://developer.download.nvidia.com/compute/cuda/repos/rhel6/x86_64/$CUDA_RPM
 sudo rpm -i $CUDA_RPM
 sudo yum clean expire-cache
