@@ -13,8 +13,8 @@ wget --quiet http://dl.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch
 sudo rpm -i --quiet epel-release-6-8.noarch.rpm
 
 # Install things needed for virtualbox guest additions.
-echo "********** Removing old kernel package..."
-sudo yum remove -y --quiet kernel-2.6.32-431.el6.x86_64
+#echo "********** Removing old kernel package..."
+#sudo yum remove -y --quiet kernel-2.6.32-431.el6.x86_64 # no longer needed
 echo "********** Installing kernel headers and dkms for virtualbox guest additions..."
 sudo yum install -y --quiet kernel-devel dkms
 
@@ -23,25 +23,11 @@ sudo yum update -y --quiet
 
 # Several of these come from the EPEL repo
 echo "********** Installing lots of packages via yum..."
-sudo yum install -y --quiet tar clang cmake graphviz perl flex bison rpm-build texlive texlive-latex ghostscript gcc gcc-c++ git vim emacs swig zip sphinx python-sphinx
-# Note: changed from clang-3.4 to clang because the package has apparently been renamed.  KAB Oct 2 2014.
-sudo yum install -y --quiet screen
-
-# Probably can't use RHEL6 version of doxygen because it's very old.
-echo "********** Compiling recent doxygen..."
-cd ~/Software
-wget --quiet http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.8.src.tar.gz
-sudo yum remove -y --quiet doxygen # Remove yum version!  Necessary as otherwise might not overwrite.
-rpmbuild -ta doxygen-1.8.8.src.tar.gz --nodeps  # Use nodeps because we will eventually use a non-standard texlive installation with no RPM
-sudo yum install -y --quiet ~/rpmbuild/RPMS/x86_64/doxygen-1.8.8-1.x86_64.rpm
-echo "exclude=doxygen" | sudo tee --append /etc/yum.conf  # The hand-built RPM package has the wrong versioning scheme and by default will be overwritten by a yum update.  This prevents overwriting.
-doxygen --version  # Should be 1.8.8
-# Although we needed to have the redhat texlive installed to build the rpm, but we can delete the redhat texlive now.
-sudo yum remove -y --quiet texlive texlive-latex  # Get rid of the system texlive in preparation for latest version.
-
+sudo yum install -y --quiet tar clang cmake graphviz perl flex bison rpm-build texlive texlive-latex ghostscript gcc gcc-c++ git vim emacs swig zip sphinx python-sphinx doxygen screen
 
 # We have to install a modern texlive 2014 distro, since the yum-installable version is missing vital components.
 echo "********** Installing texlive 2014..."
+sudo yum remove -y --quiet texlive texlive-latex  # Get rid of the system texlive in preparation for latest version.
 wget --quiet http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
 tar zxf install-tl-unx.tar.gz
 cd install-tl-*
