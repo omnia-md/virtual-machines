@@ -1,8 +1,4 @@
-# Prepare a vagrant CentOS 6.5 VM for building OpenMM
-# Needs latest version of vagrant to auto-download the chef package
-#vagrant init chef/centos-6.5
-#vagrant up
-#vagrant ssh
+# Prepare a vagrant CentOS 6.6 VM for building OpenMM
 
 # Download and enable the EPEL RedHat EL extras repository
 echo "********** Enabling EPEL RedHat EL extras repository..."
@@ -13,8 +9,9 @@ wget --quiet http://dl.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch
 sudo rpm -i --quiet epel-release-6-8.noarch.rpm
 
 # Install things needed for virtualbox guest additions.
-#echo "********** Removing old kernel package..."
-#sudo yum remove -y --quiet kernel-2.6.32-431.el6.x86_64 # no longer needed
+echo "********** Removing old kernel package..."
+#sudo yum remove -y --quiet kernel-2.6.32-431.el6.x86_64
+sudo yum remove -y --quiet kernel
 echo "********** Installing kernel headers and dkms for virtualbox guest additions..."
 sudo yum install -y --quiet kernel-devel dkms
 
@@ -25,6 +22,15 @@ sudo yum update -y --quiet
 echo "********** Installing lots of packages via yum..."
 sudo yum install -y --quiet tar clang cmake graphviz perl flex bison rpm-build texlive texlive-latex ghostscript gcc gcc-c++ git vim emacs swig zip sphinx python-sphinx doxygen screen
 
+echo "********** Compiling recent doxygen..."
+cd ~/Software
+wget http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.8.src.tar.gz
+sudo yum remove -y doxygen # Remove yum version!  Necessary as otherwise might not overwrite.
+rpmbuild -ta doxygen-1.8.8.src.tar.gz --nodeps  # Use nodeps because we will eventually use a non-standard texlive installation with no RPM
+sudo yum install -y ~/rpmbuild/RPMS/x86_64/doxygen-1.8.8-1.x86_64.rpm
+echo "exclude=doxygen" | sudo tee --append /etc/yum.conf  # The hand-built RPM package has the wrong versioning scheme and by default will be overwritten by a yum update.  This prevents overwriting.
+doxygen --version  # Should be 1.8.8
+
 # We have to install a modern texlive 2014 distro, since the yum-installable version is missing vital components.
 echo "********** Installing texlive 2014..."
 sudo yum remove -y --quiet texlive texlive-latex  # Get rid of the system texlive in preparation for latest version.
@@ -34,7 +40,6 @@ cd install-tl-*
 sudo ./install-tl -profile /vagrant/texlive.profile
 export PATH=/usr/local/texlive/2014/bin/x86_64-linux:$PATH  # texlive updates bashrc to put tex on the path, but we need to update the current shell session.
 sleep 2
-
 # Make sure texlive install worked, as it often dies.  Only retry once, though.
 if which tex >/dev/null; then
     echo Found texlive
@@ -42,18 +47,12 @@ else
     echo No texlive, resuming installation
     sudo ./install-tl -profile /vagrant/texlive.profile
 fi
-
 cd ..
-
-
-
 
 # Install fortran
 echo "********** Installing fortran..."
 sudo yum install -y --quiet gcc-gfortran # Used for ambermini
-
 sudo yum install -y --quiet lapack-devel  # Used for cvxopt.  This also grabs BLAS dependency.
-
 sudo yum clean headers
 sudo yum clean packages
 
