@@ -22,6 +22,9 @@ sudo yum update -y --quiet
 echo "********** Installing lots of packages via yum..."
 sudo yum install -y --quiet tar clang cmake graphviz perl flex bison rpm-build texlive texlive-latex ghostscript gcc gcc-c++ git vim emacs swig zip sphinx python-sphinx doxygen screen
 
+# Install GLUT for OpenGL
+sudo yum install -y --quiet freeglut-devel
+
 echo "********** Compiling recent doxygen..."
 cd ~/Software
 wget http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.8.src.tar.gz
