@@ -95,15 +95,17 @@ conda install --yes --quiet fftw3f jinja2 swig sphinx conda-build cmake binstar 
 
 # Install AMD APP SDK
 echo "********** Installing AMD APP SDK..."
-# Download AMD APP SDK from here, requires click agreement: http://developer.amd.com/amd-license-agreement-appsdk/
-# Ideally we could cache this on AWS or something...
+APPSDKFILE="AMD-APP-SDK-linux-v2.9-1.599.381-GA-x64.tar.bz2"
 mkdir ~/Software/AMD
 cd ~/Software/AMD
 # Copy the tarball $APPSDKFILE to the directory containing VagrantFile, which will be shared on the guest as /vagrant/
 sudo yum install -y --quiet redhat-lsb
-APPSDKFILE="AMD-APP-SDK-linux-v2.9-1.599.381-GA-x64.tar.bz2"
-echo "This will fail if you do not have $APPSDKFILE already downloaded to the directory containing VagrantFile."
-tar -jxvf  /vagrant/$APPSDKFILE
+URL="http://jenkins.choderalab.org/userContent/$APPSDKFILE"
+echo "Retrieving AMD APP SDK from $URL..."
+wget --quiet $URL
+echo "Unpacking $APPSDKFILE..."
+tar -jxvf  $APPSDKFILE
+echo "Installing $APPSDKFILE..."
 sudo ./AMD-APP-SDK-v2.9-1.599.381-GA-linux64.sh -- -s -a yes
 
 # Add conda to the path.
