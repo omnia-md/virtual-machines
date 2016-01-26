@@ -59,10 +59,10 @@ sudo yum install -y --quiet lapack-devel  # Used for cvxopt.  This also grabs BL
 sudo yum clean headers
 sudo yum clean packages
 
-# Install CUDA7.0 for RHEL6
-echo "********** Installing CUDA 7.0 ..."
+# Install CUDA7.5 for RHEL6
+echo "********** Installing CUDA 7.5 ..."
 cd ~/Software
-CUDA_RPM=cuda-repo-rhel6-7.0-28.x86_64.rpm
+CUDA_RPM=cuda-repo-rhel6-7.5-18.x86_64.rpm
 wget --quiet http://developer.download.nvidia.com/compute/cuda/repos/rhel6/x86_64/$CUDA_RPM
 sudo rpm -i --quiet $CUDA_RPM
 sudo yum clean expire-cache
@@ -90,12 +90,12 @@ sudo ln -s  ~/miniconda/ /opt/anaconda1anaconda2anaconda3
 
 echo "********** Installing conda/binstar channels and packages..."
 export PATH=$HOME/miniconda/bin:$PATH
-conda config --add channels http://conda.binstar.org/omnia
-conda install --yes --quiet fftw3f jinja2 swig sphinx conda-build cmake binstar pip
+conda config --add channels omnia
+conda install --yes --quiet fftw3f jinja2 swig sphinx conda-build cmake anaconda-client pip
 
 # Install AMD APP SDK
-echo "********** Installing AMD APP SDK..."
-APPSDKFILE="AMD-APP-SDK-linux-v2.9-1.599.381-GA-x64.tar.bz2"
+echo "********** Installing AMD APP SDK 3.0..."
+APPSDKFILE="AMD-APP-SDKInstaller-v3.0.130.135-GA-linux64.tar.bz2"
 mkdir ~/Software/AMD
 cd ~/Software/AMD
 # Copy the tarball $APPSDKFILE to the directory containing VagrantFile, which will be shared on the guest as /vagrant/
@@ -106,7 +106,9 @@ wget --quiet $URL
 echo "Unpacking $APPSDKFILE..."
 tar -jxvf  $APPSDKFILE
 echo "Installing $APPSDKFILE..."
-sudo ./AMD-APP-SDK-v2.9-1.599.381-GA-linux64.sh -- -s -a yes
+sudo ./AMD-APP-SDK-v3.0.130.135-GA-linux64.sh -- -s -a yes
+export OPENCL_HOME=/opt/AMDAPPSDK-3.0 
+export OPENCL_LIBPATH=/opt/AMDAPPSDK-3.0/lib/x86_64
 
 # Add conda to the path.
 echo "********** Adding paths"
@@ -116,5 +118,4 @@ echo "" >> $HOME/.bashrc
 
 # Install additional packages via pip.
 echo "********** Installing packages via pip..."
-$HOME/miniconda/bin/pip install --quiet sphinxcontrib-bibtex
-
+$HOME/miniconda/bin/pip install --quiet sphinxcontrib-bibtex sphinxcontrib-lunrsearch sphinxcontrib-autodoc_doxygen
