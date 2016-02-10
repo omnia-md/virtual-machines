@@ -34,24 +34,6 @@ sudo yum install -y ~/rpmbuild/RPMS/x86_64/doxygen-1.8.8-1.x86_64.rpm
 echo "exclude=doxygen" | sudo tee --append /etc/yum.conf  # The hand-built RPM package has the wrong versioning scheme and by default will be overwritten by a yum update.  This prevents overwriting.
 doxygen --version  # Should be 1.8.8
 
-# We have to install a modern texlive 2014 distro, since the yum-installable version is missing vital components.
-echo "********** Installing texlive 2014..."
-sudo yum remove -y --quiet texlive texlive-latex  # Get rid of the system texlive in preparation for latest version.
-wget --quiet http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
-tar zxf install-tl-unx.tar.gz
-cd install-tl-*
-sudo ./install-tl -profile /vagrant/texlive.profile
-export PATH=/usr/local/texlive/2014/bin/x86_64-linux:$PATH  # texlive updates bashrc to put tex on the path, but we need to update the current shell session.
-sleep 2
-# Make sure texlive install worked, as it often dies.  Only retry once, though.
-if which tex >/dev/null; then
-    echo Found texlive
-else
-    echo No texlive, resuming installation
-    sudo ./install-tl -profile /vagrant/texlive.profile
-fi
-cd ..
-
 # Install fortran
 echo "********** Installing fortran..."
 sudo yum install -y --quiet gcc-gfortran # Used for ambermini
@@ -104,6 +86,7 @@ URL="http://jenkins.choderalab.org/userContent/$APPSDKFILE"
 echo "Retrieving AMD APP SDK from $URL..."
 wget --quiet $URL
 echo "Unpacking $APPSDKFILE..."
+ls -ltr
 tar -jxvf  $APPSDKFILE
 echo "Installing $APPSDKFILE..."
 sudo ./AMD-APP-SDK-v3.0.130.135-GA-linux64.sh -- -s -a yes
@@ -119,3 +102,22 @@ echo "" >> $HOME/.bashrc
 # Install additional packages via pip.
 echo "********** Installing packages via pip..."
 $HOME/miniconda/bin/pip install --quiet sphinxcontrib-bibtex sphinxcontrib-lunrsearch sphinxcontrib-autodoc_doxygen
+
+# We have to install a modern texlive 2014 distro, since the yum-installable version is missing vital components.
+echo "********** Installing texlive 2014..."
+sudo yum remove -y --quiet texlive texlive-latex  # Get rid of the system texlive in preparation for latest version.
+wget --quiet http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
+tar zxf install-tl-unx.tar.gz
+cd install-tl-*
+sudo ./install-tl -profile /vagrant/texlive.profile
+export PATH=/usr/local/texlive/2014/bin/x86_64-linux:$PATH  # texlive updates bashrc to put tex on the path, but we need to update the current shell session.
+sleep 2
+# Make sure texlive install worked, as it often dies.  Only retry once, though.
+if which tex >/dev/null; then
+    echo Found texlive
+else
+    echo No texlive, resuming installation
+    sudo ./install-tl -profile /vagrant/texlive.profile
+fi
+cd ..
+
