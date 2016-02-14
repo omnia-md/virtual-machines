@@ -98,7 +98,7 @@ conda install --yes --quiet fftw3f jinja2 swig sphinx conda-build cmake anaconda
 # Add conda to the path.
 echo "********** Adding paths"
 cd ~
-echo "export PATH=$HOME/miniconda/bin:/usr/local/texlive/2014/bin/x86_64-linux:/usr/local/cuda-7.0/bin/:$PATH" >> $HOME/.bashrc
+echo "export PATH=$HOME/miniconda/bin:/usr/local/texlive/2015/bin/x86_64-linux:/usr/local/cuda-7.5/bin/:$PATH" >> $HOME/.bashrc
 echo "" >> $HOME/.bashrc
 
 # Install additional packages via pip.
