@@ -71,39 +71,38 @@ sudo yum clean expire-cache
 sudo yum install -y --quiet cuda
 # NOTE: NVIDIA may push new MAJOR release versions of CUDA without warning.
 # This is even *before* doing the below update.  Beware.
+cd ~
+echo "export PATH=/usr/local/cuda-7.5/bin/:$PATH" >> $HOME/.bashrc
+echo "" >> $HOME/.bashrc
 
 echo "********** Forcing a second yum update in case CUDA has patches..."
 sudo yum update -y --quiet  # Force a second update, in case CUDA has necessary patches.
 
 # Install Conda
-echo "********** Installing conda..."
-cd ~/Software
-MINICONDA=Miniconda-latest-Linux-x86_64.sh
-MINICONDA_MD5=$(curl -s http://repo.continuum.io/miniconda/ | grep -A3 $MINICONDA | sed -n '4p' | sed -n 's/ *<td>\(.*\)<\/td> */\1/p')
-wget --quiet http://repo.continuum.io/miniconda/$MINICONDA
-if [[ $MINICONDA_MD5 != $(md5sum $MINICONDA | cut -d ' ' -f 1) ]]; then
-echo "Miniconda MD5 mismatch"
-exit 1
-fi
-bash $MINICONDA -b -p $HOME/miniconda
-
+#echo "********** Installing conda..."
+#cd ~/Software
+#MINICONDA=Miniconda-latest-Linux-x86_64.sh
+#MINICONDA_MD5=$(curl -s http://repo.continuum.io/miniconda/ | grep -A3 $MINICONDA | sed -n '4p' | sed -n 's/ *<td>\(.*\)<\/td> */\1/p')
+#wget --quiet http://repo.continuum.io/miniconda/$MINICONDA
+#if [[ $MINICONDA_MD5 != $(md5sum $MINICONDA | cut -d ' ' -f 1) ]]; then
+#echo "Miniconda MD5 mismatch"
+#exit 1
+#fi
+#bash $MINICONDA -b -p $HOME/miniconda
 # So there is a bug in some versions of anaconda where the path to swig files is HARDCODED.  Below is workaround.  See https://github.com/ContinuumIO/anaconda-issues/issues/48
-sudo ln -s  ~/miniconda/ /opt/anaconda1anaconda2anaconda3
-
-echo "********** Installing conda/binstar channels and packages..."
-export PATH=$HOME/miniconda/bin:$PATH
-conda config --add channels omnia
-conda install --yes --quiet fftw3f jinja2 swig sphinx conda-build cmake anaconda-client pip
-
-# Add conda to the path.
-echo "********** Adding paths"
-cd ~
-echo "export PATH=$HOME/miniconda/bin:/usr/local/texlive/2015/bin/x86_64-linux:/usr/local/cuda-7.5/bin/:$PATH" >> $HOME/.bashrc
-echo "" >> $HOME/.bashrc
-
+#sudo ln -s  ~/miniconda/ /opt/anaconda1anaconda2anaconda3
+#echo "********** Installing conda/binstar channels and packages..."
+#export PATH=$HOME/miniconda/bin:$PATH
+#conda config --add channels omnia
+#conda install --yes --quiet fftw3f jinja2 swig sphinx conda-build cmake anaconda-client pip
+## Add conda to the path.
+#echo "********** Adding paths"
+#cd ~
+#echo "export PATH=$HOME/miniconda/bin:/usr/local/texlive/2015/bin/x86_64-linux:/usr/local/cuda-7.5/bin/:$PATH" >> $HOME/.bashrc
+#echo "" >> $HOME/.bashrc
 # Install additional packages via pip.
-echo "********** Installing packages via pip..."
-$HOME/miniconda/bin/pip install --quiet sphinxcontrib-bibtex sphinxcontrib-lunrsearch sphinxcontrib-autodoc_doxygen
+#echo "********** Installing packages via pip..."
+#$HOME/miniconda/bin/pip install --quiet sphinxcontrib-bibtex sphinxcontrib-lunrsearch sphinxcontrib-autodoc_doxygen
 
 # We have to install a modern texlive distro, since the yum-installable version is missing vital components.
 echo "********** Installing texlive..."
@@ -112,7 +111,7 @@ wget --quiet http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
 tar zxf install-tl-unx.tar.gz
 cd install-tl-*
 sudo ./install-tl -profile /vagrant/texlive.profile
-export PATH=/usr/local/texlive/2014/bin/x86_64-linux:$PATH  # texlive updates bashrc to put tex on the path, but we need to update the current shell session.
+export PATH=/usr/local/texlive/2015/bin/x86_64-linux:$PATH  # texlive updates bashrc to put tex on the path, but we need to update the current shell session.
 sleep 2
 # Make sure texlive install worked, as it often dies.  Only retry once, though.
 if which tex >/dev/null; then
