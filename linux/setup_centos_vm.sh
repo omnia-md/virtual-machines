@@ -42,7 +42,7 @@ ls -ltr
 tar -jxvf  $APPSDKFILE
 echo "Installing $APPSDKFILE..."
 sudo ./AMD-APP-SDK-v3.0.130.135-GA-linux64.sh -- -s -a yes
-export OPENCL_HOME=/opt/AMDAPPSDK-3.0 
+export OPENCL_HOME=/opt/AMDAPPSDK-3.0
 export OPENCL_LIBPATH=/opt/AMDAPPSDK-3.0/lib/x86_64
 
 echo "********** Compiling recent doxygen..."
@@ -105,8 +105,8 @@ echo "" >> $HOME/.bashrc
 echo "********** Installing packages via pip..."
 $HOME/miniconda/bin/pip install --quiet sphinxcontrib-bibtex sphinxcontrib-lunrsearch sphinxcontrib-autodoc_doxygen
 
-# We have to install a modern texlive 2014 distro, since the yum-installable version is missing vital components.
-echo "********** Installing texlive 2014..."
+# We have to install a modern texlive distro, since the yum-installable version is missing vital components.
+echo "********** Installing texlive..."
 sudo yum remove -y --quiet texlive texlive-latex  # Get rid of the system texlive in preparation for latest version.
 wget --quiet http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
 tar zxf install-tl-unx.tar.gz
@@ -121,5 +121,10 @@ else
     echo No texlive, resuming installation
     sudo ./install-tl -profile /vagrant/texlive.profile
 fi
+# Install additional packages.
+/usr/local/texlive/2015/bin/x86_64-linux/tlmgr install \
+    cmap fancybox titlesec framed fancyvrb threeparttable \
+    mdwtools wrapfig parskip upquote float multirow hyphenat caption \
+    xstring
 cd ..
 
