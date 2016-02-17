@@ -44,6 +44,9 @@ echo "Installing $APPSDKFILE..."
 sudo ./AMD-APP-SDK-v3.0.130.135-GA-linux64.sh -- -s -a yes
 export OPENCL_HOME=/opt/AMDAPPSDK-3.0
 export OPENCL_LIBPATH=/opt/AMDAPPSDK-3.0/lib/x86_64
+echo "export OPENCL_HOME=/opt/AMDAPPSDK-3.0" >> $HOME/.bashrc
+echo "export OPENCL_LIBPATH=/opt/AMDAPPSDK-3.0/lib/x86_64" >> $HOME/.bashrc
+echo "" >> $HOME/.bashrc
 
 echo "********** Compiling recent doxygen..."
 cd ~/Software
@@ -111,7 +114,8 @@ wget --quiet http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
 tar zxf install-tl-unx.tar.gz
 cd install-tl-*
 sudo ./install-tl -profile /vagrant/texlive.profile
-export PATH=/usr/local/texlive/2015/bin/x86_64-linux:$PATH  # texlive updates bashrc to put tex on the path, but we need to update the current shell session.
+echo "export PATH=/usr/local/texlive/2015/bin/x86_64-linux:$PATH" >> $HOME/.bashrc
+echo "" >> $HOME/.bashrc
 sleep 2
 # Make sure texlive install worked, as it often dies.  Only retry once, though.
 if which tex >/dev/null; then
@@ -124,6 +128,13 @@ fi
 /usr/local/texlive/2015/bin/x86_64-linux/tlmgr install \
     cmap fancybox titlesec framed fancyvrb threeparttable \
     mdwtools wrapfig parskip upquote float multirow hyphenat caption \
-    xstring
+    xstring cmap
 cd ..
+
+# Set up conda proxy for MSKCC
+cat <<EOF >> $HOME/.condarc
+proxy_servers:
+    http: http://ftpproxy:8080
+    https: https://ftpproxy:8080
+EOF
 
