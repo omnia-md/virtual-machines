@@ -125,7 +125,7 @@ else
     sudo ./install-tl -profile /vagrant/texlive.profile
 fi
 # Install additional packages.
-/usr/local/texlive/2015/bin/x86_64-linux/tlmgr install \
+sudo /usr/local/texlive/2015/bin/x86_64-linux/tlmgr install \
     cmap fancybox titlesec framed fancyvrb threeparttable \
     mdwtools wrapfig parskip upquote float multirow hyphenat caption \
     xstring cmap
